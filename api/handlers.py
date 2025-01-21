@@ -3,11 +3,11 @@ from typing import List
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 
-from core.dependencies import auth
+from core.dependencies import auth, rate_limit
 from models.models import ProcessTextRequest, ProcessTextResponse
 from services.service import ProcessedTextServiceError
 
-router = APIRouter(dependencies=[Depends(auth)])
+router = APIRouter(dependencies=[Depends(auth), Depends(rate_limit)])
 
 
 @router.post("/process-text", response_model=ProcessTextResponse)
