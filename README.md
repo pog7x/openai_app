@@ -70,3 +70,9 @@ curl '0.0.0.0:5555/process-text' \
 	"ai_response": "AI helps automate routine tasks, improve decision-making, and enhance code quality."
 }
 ```
+
+## Запустить тесты в докере
+
+```bash
+docker-compose exec app pytest
+```

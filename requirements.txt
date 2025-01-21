@@ -5,3 +5,7 @@ aioredis
 uvicorn
 httpx
 click
+pytest
+faker
+setuptools
+pytest-asyncio
