@@ -1,5 +1,6 @@
-import time
 import logging
+import time
+
 from aioredis import Redis
 from fastapi import Request, Response
 from starlette.responses import JSONResponse
@@ -15,9 +16,6 @@ class AuthMiddleware:
         self._secret_password = secret_password
 
     async def __call__(self, request: Request, call_next):
-        if request.url.path in (request.app.openapi_url, request.app.docs_url):
-            return await call_next(request)
-
         username = request.headers.get("username")
         password = request.headers.get("password")
 
@@ -34,9 +32,6 @@ class RateLimitMiddleware:
         self._lifetime: int = lifetime
 
     async def __call__(self, request: Request, call_next):
-        if request.url.path in (request.app.openapi_url, request.app.docs_url):
-            return await call_next(request)
-
         current_time = int(time.time())
         username = request.headers.get("username")
 

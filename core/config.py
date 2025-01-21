@@ -1,3 +1,4 @@
+from pydantic import PositiveInt
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,9 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     PROJECT_VERSION: str = "0.0.1"
     ROOT_URL: str = ""
+
+    RATE_LIMIT: PositiveInt = 5
+    RATE_LIMIT_LIFETIME: PositiveInt = 50
 
     REDIS_USER: str
     REDIS_PASSWORD: str

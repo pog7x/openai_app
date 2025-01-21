@@ -25,8 +25,8 @@ class ProcessedTextService:
     async def create_process_resp(self, req: ProcessTextRequest) -> ProcessTextResponse:
         try:
             resp = await self._openai.fetch_openai_response(prompt=req.payload.text)
-        except ProcessedTextRepoError as err:
-            raise ProcessedTextServiceError(msg=err.msg)
+        except Exception:
+            raise ProcessedTextServiceError(msg="unexpected ai error")
 
         res = ProcessTextResponse(
             event_id=req.event_id,

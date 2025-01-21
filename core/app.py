@@ -1,4 +1,3 @@
-from logging.config import dictConfig
 
 import aioredis
 from fastapi import FastAPI
@@ -8,8 +7,7 @@ from starlette.types import ASGIApp
 from api.routes import router
 from clients.openai_client import OpenAICLient
 from core.config import settings
-
-from core.middleware import AuthMiddleware, RateLimitMiddleware, LoggingMiddleware
+from core.middleware import LoggingMiddleware, RateLimitMiddleware
 from repositories.repository import ProcessedTextRepo
 from services.service import ProcessedTextService
 
@@ -40,12 +38,10 @@ class ApplicationFactory:
 
     @staticmethod
     def _init_middlewares(app: FastAPI) -> None:
-        # Auth
-        auth = AuthMiddleware(secret_username=settings.SECRET_USERNAME, secret_password=settings.SECRET_PASSWORD)
-        app.add_middleware(BaseHTTPMiddleware, dispatch=auth)
-
         # Rate limit
-        rate_limit = RateLimitMiddleware(redis_cli=app.redis)
+        rate_limit = RateLimitMiddleware(
+            redis_cli=app.redis, rate_limit=settings.RATE_LIMIT, lifetime=settings.RATE_LIMIT_LIFETIME
+        )
         app.add_middleware(BaseHTTPMiddleware, dispatch=rate_limit)
 
         # Logging
